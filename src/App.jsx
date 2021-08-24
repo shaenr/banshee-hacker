@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ReactTerminalStateless, { 
   ReactOutputRenderers 
 } from 'react-terminal-component';
 
 import { 
-  EmulatorState, 
-  getEnvironmentVariable 
+  EmulatorState
 } from 'javascript-terminal';
 
 import myTheme from './myTheme';
 import Level from './levels/level1/index';
+
+import { buildPrompt } from './utils';
 
 import "./app.css";
 
@@ -24,37 +25,27 @@ const emulatorState = EmulatorState.create({
 })
 
 
-
 // Component: App
 export default function App() {
 
   // Declaring State Hooks
   const [input, setInput] = useState('');
   const [emuState, setEmuState] = useState(emulatorState);
-  const promptSymbol = "DSfds"
-
-  const buildPrompt = () => {
-    const headDelim = "(";
-    const user = Level.Data.user;
-    const atChar = "@";
-    const host = Level.Data.hostname;
-    const pathDelim = ")──[";
-    // const cwd = getEnvironmentVariable(state.getEnvVariables(), 'cwd')
-    const cwd = "CWD";
-    const tailDelim = "] $ ";
-    return headDelim + user + atChar + host + pathDelim + cwd + tailDelim;
-  }
 
 
-   const [promptText, setPromptText] = useState(buildPrompt())
+  // figure out how to reference cwd from env to set up state hook to promp based on
 
+  const [promptSymbol, setPromptSymbol] = useState(buildPrompt(Level));
 
+  useEffect(() => {
+    console.log('render')
+  }, [emuState])
 
   return (
     <ReactTerminalStateless
       emulatorState={emuState}
       theme={ myTheme }
-      promptSymbol={promptText}
+      promptSymbol={promptSymbol}
       outputRenderers={ ReactOutputRenderers  }
       inputStr={input}
       onInputChange={( (inp) => setInput(inp) )}

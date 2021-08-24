@@ -15,3 +15,16 @@ export function addVarsToEnv(customEnv) {
   
     return env
 }
+
+
+export const buildPrompt = (levelObj) => {
+  const headDelim = "(";
+  const user = levelObj.Data.user;
+  const atChar = "@";
+  const host = levelObj.Data.hostname;
+  const pathDelim = ")──[";
+  // const cwd = getEnvironmentVariable(state.getEnvVariables(), 'cwd')
+  const cwd = "CWD";
+  const tailDelim = "] $ ";
+  return headDelim + user + atChar + host + pathDelim + cwd + tailDelim;
+}

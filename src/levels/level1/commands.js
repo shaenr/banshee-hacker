@@ -1,17 +1,33 @@
-import { defaultCommandMapping, OutputFactory, CommandMapping, DirOp, EmulatorState } from 'javascript-terminal';
+import { 
+    defaultCommandMapping, 
+    OutputFactory, 
+    CommandMapping, 
+    DirOp, 
+    
+    setEnvVariables,
+    parseOptions, 
+    EnvVariableUtil,
+    resolvePath, 
+    makeError } from 'javascript-terminal';
 
-// delete defaultCommandMapping['whoami'];
+import { fsErrorType } from 'react-terminal-component';
+
+
+// This is where you specify default commands to remove either because you will replace them or dont want them
+delete defaultCommandMapping['cd'];
+
+
+const updateStateCwd = (state, newCwdPath) => {
+    return EnvVariableUtil.setEnvironmentVariable(
+      state.getEnvVariables(), 'cwd', newCwdPath
+    );
+  };
 
 const commandMap = CommandMapping.create({...defaultCommandMapping,
 
     'debug': {
         'function': (state, opts) => {
-            console.log(`state: ${Object.entries(state)}`)
-            
-            console.log(`opts: ${opts}`)
             const input = opts.join(' ');
-            console.log(`input: ${input}`)
-
             return {
                 output: OutputFactory.makeTextOutput(input)
             };
@@ -20,11 +36,9 @@ const commandMap = CommandMapping.create({...defaultCommandMapping,
     },
 
     // hasHome
-    'home': {
+    'ishome': {
         'function': (state, opts) => {
             const fs = state.getFileSystem()
-            console.log(fs)
-            console.log(state.getFileSystem())
             const isHomeDefined = DirOp.hasDirectory(fs, '/home')
             console.log(isHomeDefined)
             return {
@@ -32,9 +46,26 @@ const commandMap = CommandMapping.create({...defaultCommandMapping,
             }
         },
         'optDef': {}
-    }
+    },
 
+    
+    // hasHome
+    'cd': {
+        'function': (state, opts) => {
+            // const fs = state.getFileSystem()
+            // const isHomeDefined = DirOp.hasDirectory(fs, '/home')
+
+            const newCwdPath = "TEWSTRAESD"
+
+            return {
+                state: state.setEnvVariables(
+                    updateStateCwd(state, newCwdPath)
+                )
+            }
+        },
+        'optDef': {}
+    },
 
 })
-
+    
 export default commandMap;
