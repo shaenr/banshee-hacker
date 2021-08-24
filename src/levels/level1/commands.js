@@ -14,7 +14,7 @@ import { fsErrorType } from 'react-terminal-component';
 
 
 // This is where you specify default commands to remove either because you will replace them or dont want them
-delete defaultCommandMapping['cd'];
+// delete defaultCommandMapping['cd'];
 
 
 const updateStateCwd = (state, newCwdPath) => {
@@ -43,24 +43,6 @@ const commandMap = CommandMapping.create({...defaultCommandMapping,
             console.log(isHomeDefined)
             return {
                 output: OutputFactory.makeTextOutput(`Home is at`)
-            }
-        },
-        'optDef': {}
-    },
-
-    
-    // hasHome
-    'cd': {
-        'function': (state, opts) => {
-            // const fs = state.getFileSystem()
-            // const isHomeDefined = DirOp.hasDirectory(fs, '/home')
-
-            const newCwdPath = "TEWSTRAESD"
-
-            return {
-                state: state.setEnvVariables(
-                    updateStateCwd(state, newCwdPath)
-                )
             }
         },
         'optDef': {}
