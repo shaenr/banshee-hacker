@@ -23,24 +23,32 @@ const emulatorState = EmulatorState.create({
   'commandMapping': Level.Commands,
 })
 
-const buildPrompt = (state) => {
-  const headDelim = "(";
-  const user = Level.Data.user;
-  const atChar = "@";
-  const host = Level.Data.hostname;
-  const pathDelim = ")──[";
-  // const cwd = getEnvironmentVariable(state.getEnvVariables(), 'cwd')
-  let cwd = "CWD";
-  const tailDelim = "] $ ";
-  return headDelim + user + atChar + host + pathDelim + cwd + tailDelim;
-}
+
 
 // Component: App
 export default function App() {
+
   // Declaring State Hooks
   const [input, setInput] = useState('');
   const [emuState, setEmuState] = useState(emulatorState);
-  const [promptText, setPromptText] = useState(buildPrompt(emuState))
+  const promptSymbol = "DSfds"
+
+  const buildPrompt = () => {
+    const headDelim = "(";
+    const user = Level.Data.user;
+    const atChar = "@";
+    const host = Level.Data.hostname;
+    const pathDelim = ")──[";
+    // const cwd = getEnvironmentVariable(state.getEnvVariables(), 'cwd')
+    const cwd = "CWD";
+    const tailDelim = "] $ ";
+    return headDelim + user + atChar + host + pathDelim + cwd + tailDelim;
+  }
+
+
+   const [promptText, setPromptText] = useState(buildPrompt())
+
+
 
   return (
     <ReactTerminalStateless
